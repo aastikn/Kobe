@@ -249,23 +249,25 @@ class _EpubReaderScreenState extends State<EpubReaderScreen> {
                     controller: _epubController,
                     onDocumentLoaded: (document) {
                       print("Document loaded successfully");
-                      // Consider setState if styles depend dynamically on document
                     },
-                    onChapterChanged: (chapter) {},
                     builders: EpubViewBuilders<DefaultBuilderOptions>(
                       options: DefaultBuilderOptions(
-                        // Default text style for elements NOT specified in the 'styles' map
+                        // Default style for tags *not* in the styles map
                         textStyle: TextStyle(
                           fontSize: _fontSize,
                           color: AppTheme.textBrown,
-                          height: 1.3, // Default line height
+                          // Don't set height here if you set it in 'p' style
+                          // height: 1.3,
                         ),
+                        // Padding applied between paragraph blocks by default
                         paragraphPadding:
                             const EdgeInsets.symmetric(vertical: 8),
-                        // *** Use the 'styles' map for tag-specific styling ***
-                        // <-- Pass the map here
+                        // *** Use the 'styles' map HERE ***// <-- This is the correct place
                       ),
+                      // Other builders are ok
                       chapterDividerBuilder: (_) => const Divider(),
+                      // *** REMOVE the incorrect paragraphBuilder ***
+                      // paragraphBuilder: (context, paragraphNode, defaultWidget) { ... }, // <-- REMOVE THIS BLOCK
                     ),
                   ),
       ),
